@@ -2,7 +2,7 @@ using E_Study.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace E_Study.Controllers
+namespace E_Study.Areas.Home.Controllers
 {
     public class HomeController : Controller
     {

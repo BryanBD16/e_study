@@ -22,9 +22,19 @@ namespace E_Study
 
             app.UseAuthorization();
 
+            app.MapAreaControllerRoute(
+                 name: "Home",
+                 areaName: "Home",
+                 pattern: "Home/{controller=Home}/{action=Index}/{id?}");
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            app.MapGet("/", async context =>
+            {
+                context.Response.Redirect("/Home/Home/Index");
+            });
 
             app.Run();
         }
