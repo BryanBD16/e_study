@@ -34,7 +34,7 @@ namespace E_Study
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{Area:exists}/{controller=Home}/{action=Index}/{id?}");
 
             app.MapGet("/", async context =>
             {
