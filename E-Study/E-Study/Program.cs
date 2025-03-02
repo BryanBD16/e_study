@@ -38,7 +38,7 @@ namespace E_Study
 
             app.MapGet("/", async context =>
             {
-                context.Response.Redirect("/Home/Home/Index");
+                context.Response.Redirect("/Course/Courses/Index");
             });
 
             app.Run();

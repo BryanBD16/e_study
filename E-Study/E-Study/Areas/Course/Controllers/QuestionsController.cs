@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace E_Study.Areas.Course.Controllers
 {
+    [Area("Course")]
     public class QuestionsController : Controller
     {
         private readonly E_StudyDbContext _context;
@@ -17,7 +18,7 @@ namespace E_Study.Areas.Course.Controllers
         // GET: QuestionsController
         public ActionResult Evaluation(int CourseId)
         {
-            List<EvaluationQuestionVM> questions = _context.Questions.Where(q => q.CourseId == CourseId).Select(q => new EvaluationQuestionVM(q)).ToList();
+            List<EvaluationQuestionVM> questions = _context.Questions.Where(q => q.CourseId == CourseId).Include(q => q.AnswerOptions).Select(q => new EvaluationQuestionVM(q)).ToList();
 
             return View(new EvaluationVM(questions, CourseId));
         }
@@ -26,7 +27,8 @@ namespace E_Study.Areas.Course.Controllers
         {
             if (ModelState.IsValid)
             {
-                CourseResult result = _context.CourseResults.Where(cr => cr.CourseId == model.CourseId).FirstOrDefault();
+                CourseResult result = new CourseResult();
+                result.CourseId = model.CourseId;
                 foreach (var response in model.Answers)
                 {
                     result.Answers.Add(new Answer
@@ -35,6 +37,7 @@ namespace E_Study.Areas.Course.Controllers
                         SelectedAnswerId = response.SelectedAnswerId
                     });
                 }
+                _context.CourseResults.Add(result);
                 _context.SaveChanges();
                 return RedirectToAction("Result", result.Id);
             }

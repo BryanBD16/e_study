@@ -9,5 +9,9 @@
             CourseId = courseId;
             Answers = answers;
         }
+        public EvaluationResponseVM()
+        {
+            
+        }
     }
 }

@@ -1,16 +1,17 @@
-﻿@model EvaluationVM;
+﻿@model EvaluationVM
 
 <form asp-action="Evaluation" asp-controller="Questions" method="post">
     <input type="hidden" asp-for="CourseId" />
 
-    @foreach (var question in Model.Questions)
+    @for (int i = 0; i < Model.Questions.Count; i++)
     {
         <div>
-            <p>@question.Text</p>
-            @foreach (var option in question.AnswerOptions)
+            <p>@Model.Questions[i].Text</p>
+            <input type="hidden" name="Answers[@i].QuestionId" value="@Model.Questions[i].Id" />
+            @foreach (var option in Model.Questions[i].AnswerOptions)
             {
                 <label>
-                    <input type="radio" name="Responses[@question.Id].SelectedAnswerId" value="@option.Id" />
+                    <input type="radio" name="Answers[@i].SelectedAnswerId" value="@option.Id" />
                     @option.Text
                 </label>
             }

@@ -22,6 +22,7 @@ namespace E_Study.Areas.Course.Controllers
         }
 
         // GET: Course/Courses
+        //Display all the course. It is from here that we access the details view.
         public async Task<IActionResult> Index()
         {
             return View((await _context.Courses.ToListAsync()).Select(c => new CourseDisplayVM(c)));
@@ -171,5 +172,44 @@ namespace E_Study.Areas.Course.Controllers
         {
             return _context.Courses.Any(e => e.Id == id);
         }
+
+
+        // GET: Course/Courses
+        //Display all the course. It is from here that we access the details view.
+        public async Task<IActionResult> CoursesManagement()
+        {
+            return View((await _context.Courses.ToListAsync()).Select(c => new CourseDetailsVM(c)));
+        }
+
+        [HttpGet]
+        public IActionResult AddQuestions(int id)
+        {
+            var model = new QuestionVM { CourseId = id, AnswerOptions = new List<AnswerOptionVM> { new AnswerOptionVM(), new AnswerOptionVM() } };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddQuestions(QuestionVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var question = new Question
+                {
+                    Text = model.Text,
+                    CourseId = model.CourseId,
+                    AnswerOptions = model.AnswerOptions.Select(a => new AnswerOption
+                    {
+                        Text = a.Text,
+                        IsCorrect = a.IsCorrect
+                    }).ToList()
+                };
+
+                _context.Questions.Add(question);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(CoursesManagement));
+            }
+            return View(model);
+        }
+
     }
 }

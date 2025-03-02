@@ -9,5 +9,9 @@
             QuestionId = questionId;
             SelectedAnswerId = selectedAnswerId;
         }
+        public EvaluationAnswerVM()
+        {
+            
+        }
     }
 }

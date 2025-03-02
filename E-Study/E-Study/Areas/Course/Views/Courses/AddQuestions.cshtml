@@ -1,0 +1,22 @@
+﻿@model E_Study.ViewModels.QuestionVM
+
+<form asp-action="AddQuestions" asp-controller="Courses" method="post">
+    <input type="hidden" asp-for="CourseId" />
+
+    <div>
+        <label>Question</label>
+        <input type="text" asp-for="Text" required />
+    </div>
+
+    @for (int i = 0; i < Model.AnswerOptions.Count; i++)
+    {
+        <div>
+            <label>Answer Option</label>
+            <input type="text" asp-for="AnswerOptions[i].Text" required />
+            <label>Correct?</label>
+            <input type="checkbox" asp-for="AnswerOptions[i].IsCorrect" />
+        </div>
+    }
+
+    <button type="submit">Add Question</button>
+</form>
