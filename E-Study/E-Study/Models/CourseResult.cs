@@ -9,6 +9,8 @@ namespace E_Study.Models
         [Key]
         public int Id { get; set; }
 
+        public DateTime ResultTime { get; set; } = DateTime.Now;
+
         [ForeignKey("Course")]
         [Required]
         public int CourseId { get; set; }

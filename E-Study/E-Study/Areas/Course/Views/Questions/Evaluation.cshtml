@@ -1,0 +1,21 @@
+﻿@model EvaluationVM;
+
+<form asp-action="Evaluation" asp-controller="Questions" method="post">
+    <input type="hidden" asp-for="CourseId" />
+
+    @foreach (var question in Model.Questions)
+    {
+        <div>
+            <p>@question.Text</p>
+            @foreach (var option in question.AnswerOptions)
+            {
+                <label>
+                    <input type="radio" name="Responses[@question.Id].SelectedAnswerId" value="@option.Id" />
+                    @option.Text
+                </label>
+            }
+        </div>
+    }
+
+    <button type="submit">Soumettre</button>
+</form>

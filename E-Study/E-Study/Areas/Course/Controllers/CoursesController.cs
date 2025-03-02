@@ -65,25 +65,6 @@ namespace E_Study.Areas.Course.Controllers
             return View(new CourseMaterialsVM(course));
         }
 
-        // GET: Course/Courses/Quiz/5
-        // Display the material of the course like youtube video. It is from this page that we access the course quiz(list of questions).
-        public async Task<IActionResult> Quiz(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var course = await _context.Courses
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (course == null)
-            {
-                return NotFound();
-            }
-
-            return View(new CourseMaterialsVM(course));
-        }
-
         // GET: Course/Courses/Create
         public IActionResult Create()
         {

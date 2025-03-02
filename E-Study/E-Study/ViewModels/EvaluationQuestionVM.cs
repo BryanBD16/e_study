@@ -4,16 +4,16 @@ using E_Study.Models;
 
 namespace E_Study.ViewModels
 {
-    public class QuizQuestionVM
+    public class EvaluationQuestionVM
     {
         public int Id { get; set; }
         public string Text { get; set; }
-        public int CourseId { get; set; }
-        public QuizQuestionVM(Question question)
+        public List<AnswerOption> AnswerOptions { get; set; }
+        public EvaluationQuestionVM(Question question)
         {
             Id = question.Id;
             Text = question.Text;
-            CourseId = question.CourseId;
+            AnswerOptions = question.AnswerOptions.ToList();
         }
     }
 }
