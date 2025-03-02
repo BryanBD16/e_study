@@ -21,5 +21,8 @@ namespace E_Study.Models
 
         [ValidateNever]
         public ICollection<Question> Questions { get; set; }
+
+        [ValidateNever]
+        public ICollection<CourseResult> CourseResults { get; set; }
     }
 }

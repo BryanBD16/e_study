@@ -5,7 +5,7 @@
 namespace E_Study.Migrations
 {
     /// <inheritdoc />
-    public partial class Initiale_Creation : Migration
+    public partial class Bugfix : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,11 +18,30 @@ namespace E_Study.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    YouTubeUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    YouTubeId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Courses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CourseResults",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CourseId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseResults", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CourseResults_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,24 +86,31 @@ namespace E_Study.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Responses",
+                name: "Answers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CourseResultId = table.Column<int>(type: "int", nullable: false),
                     QuestionId = table.Column<int>(type: "int", nullable: false),
                     SelectedAnswerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Responses", x => x.Id);
+                    table.PrimaryKey("PK_Answers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Responses_AnswerOptions_SelectedAnswerId",
+                        name: "FK_Answers_AnswerOptions_SelectedAnswerId",
                         column: x => x.SelectedAnswerId,
                         principalTable: "AnswerOptions",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Responses_Questions_QuestionId",
+                        name: "FK_Answers_CourseResults_CourseResultId",
+                        column: x => x.CourseResultId,
+                        principalTable: "CourseResults",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Answers_Questions_QuestionId",
                         column: x => x.QuestionId,
                         principalTable: "Questions",
                         principalColumn: "Id");
@@ -96,29 +122,42 @@ namespace E_Study.Migrations
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Questions_CourseId",
-                table: "Questions",
-                column: "CourseId");
+                name: "IX_Answers_CourseResultId",
+                table: "Answers",
+                column: "CourseResultId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Responses_QuestionId",
-                table: "Responses",
+                name: "IX_Answers_QuestionId",
+                table: "Answers",
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Responses_SelectedAnswerId",
-                table: "Responses",
+                name: "IX_Answers_SelectedAnswerId",
+                table: "Answers",
                 column: "SelectedAnswerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseResults_CourseId",
+                table: "CourseResults",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Questions_CourseId",
+                table: "Questions",
+                column: "CourseId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Responses");
+                name: "Answers");
 
             migrationBuilder.DropTable(
                 name: "AnswerOptions");
+
+            migrationBuilder.DropTable(
+                name: "CourseResults");
 
             migrationBuilder.DropTable(
                 name: "Questions");

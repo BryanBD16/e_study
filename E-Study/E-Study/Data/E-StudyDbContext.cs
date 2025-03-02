@@ -12,22 +12,25 @@ namespace E_Study.Data
         public DbSet<Course> Courses { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<AnswerOption> AnswerOptions { get; set; }
-        public DbSet<Response> Responses { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+        public DbSet<CourseResult> CourseResults { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Désactivez les suppressions en cascade pour certaines relations
-            modelBuilder.Entity<Response>()
-                .HasOne(r => r.Question)
-                .WithMany()
-                .HasForeignKey(r => r.QuestionId)
+            modelBuilder.Entity<Answer>()
+                .HasOne(r => r.Question)  // Answer has one Question
+                .WithMany()               // Question can have many Answers
+                .HasForeignKey(r => r.QuestionId) // Define the foreign key
+                .OnDelete(DeleteBehavior.NoAction); // Set delete behavior
+
+            // Define the relationship with SelectedAnswer and set delete behavior
+            modelBuilder.Entity<Answer>()
+                .HasOne(r => r.SelectedAnswer)  // Answer has one SelectedAnswer (AnswerOption)
+                .WithMany()                     // AnswerOption can have many Answers
+                .HasForeignKey(r => r.SelectedAnswerId) // Define the foreign key
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Response>()
-                .HasOne(r => r.SelectedAnswer)
-                .WithMany()
-                .HasForeignKey(r => r.SelectedAnswerId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

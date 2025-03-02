@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Study.Migrations
 {
     [DbContext(typeof(E_StudyDbContext))]
-    [Migration("20250301192534_Initiale_Creation")]
-    partial class Initiale_Creation
+    [Migration("20250302172304_Bugfix")]
+    partial class Bugfix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,34 @@ namespace E_Study.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("E_Study.Models.Answer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseResultId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SelectedAnswerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseResultId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("SelectedAnswerId");
+
+                    b.ToTable("Answers");
+                });
 
             modelBuilder.Entity("E_Study.Models.AnswerOption", b =>
                 {
@@ -68,13 +96,31 @@ namespace E_Study.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("YouTubeUrl")
+                    b.Property<string>("YouTubeId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("E_Study.Models.CourseResult", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("CourseResults");
                 });
 
             modelBuilder.Entity("E_Study.Models.Question", b =>
@@ -100,27 +146,31 @@ namespace E_Study.Migrations
                     b.ToTable("Questions");
                 });
 
-            modelBuilder.Entity("E_Study.Models.Response", b =>
+            modelBuilder.Entity("E_Study.Models.Answer", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.HasOne("E_Study.Models.CourseResult", "CourseResult")
+                        .WithMany("Answers")
+                        .HasForeignKey("CourseResultId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.HasOne("E_Study.Models.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
+                    b.HasOne("E_Study.Models.AnswerOption", "SelectedAnswer")
+                        .WithMany()
+                        .HasForeignKey("SelectedAnswerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
-                    b.Property<int>("SelectedAnswerId")
-                        .HasColumnType("int");
+                    b.Navigation("CourseResult");
 
-                    b.HasKey("Id");
+                    b.Navigation("Question");
 
-                    b.HasIndex("QuestionId");
-
-                    b.HasIndex("SelectedAnswerId");
-
-                    b.ToTable("Responses");
+                    b.Navigation("SelectedAnswer");
                 });
 
             modelBuilder.Entity("E_Study.Models.AnswerOption", b =>
@@ -134,6 +184,17 @@ namespace E_Study.Migrations
                     b.Navigation("Question");
                 });
 
+            modelBuilder.Entity("E_Study.Models.CourseResult", b =>
+                {
+                    b.HasOne("E_Study.Models.Course", "Course")
+                        .WithMany("CourseResults")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("E_Study.Models.Question", b =>
                 {
                     b.HasOne("E_Study.Models.Course", "Course")
@@ -145,28 +206,16 @@ namespace E_Study.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("E_Study.Models.Response", b =>
-                {
-                    b.HasOne("E_Study.Models.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("E_Study.Models.AnswerOption", "SelectedAnswer")
-                        .WithMany()
-                        .HasForeignKey("SelectedAnswerId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Question");
-
-                    b.Navigation("SelectedAnswer");
-                });
-
             modelBuilder.Entity("E_Study.Models.Course", b =>
                 {
+                    b.Navigation("CourseResults");
+
                     b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("E_Study.Models.CourseResult", b =>
+                {
+                    b.Navigation("Answers");
                 });
 
             modelBuilder.Entity("E_Study.Models.Question", b =>

@@ -21,5 +21,6 @@ namespace E_Study.Models
         public int QuestionId { get; set; }
         [ValidateNever]
         public Question Question { get; set; }
+
     }
 }

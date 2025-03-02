@@ -46,9 +46,28 @@ namespace E_Study.Areas.Course.Controllers
             return View(new CourseDetailsVM(course));
         }
 
-        // GET: Course/Courses/Details/5
+        // GET: Course/Courses/Materials/5
         // Display the material of the course like youtube video. It is from this page that we access the course quiz(list of questions).
         public async Task<IActionResult> Materials(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var course = await _context.Courses
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            return View(new CourseMaterialsVM(course));
+        }
+
+        // GET: Course/Courses/Quiz/5
+        // Display the material of the course like youtube video. It is from this page that we access the course quiz(list of questions).
+        public async Task<IActionResult> Quiz(int? id)
         {
             if (id == null)
             {
@@ -72,8 +91,6 @@ namespace E_Study.Areas.Course.Controllers
         }
 
         // POST: Course/Courses/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,YouTubeId")] Models.Course course)
@@ -104,11 +121,9 @@ namespace E_Study.Areas.Course.Controllers
         }
 
         // POST: Course/Courses/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,YouTubeUrl")] Models.Course course)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,YouTubeId")] Models.Course course)
         {
             if (id != course.Id)
             {

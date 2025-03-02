@@ -4,18 +4,22 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace E_Study.Models
 {
-    public class Response
+    public class Answer
     {
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey("Question")]
+        [ForeignKey("CourseResult")]
+        [Required]
+        public int CourseResultId { get; set; }
+        [ValidateNever]
+        public CourseResult CourseResult { get; set; }
+
         [Required]
         public int QuestionId { get; set; }
         [ValidateNever]
         public Question Question { get; set; }
 
-        [ForeignKey("SelectedAnswer")]
         [Required(ErrorMessage = "You have to select an answer")]
         public int SelectedAnswerId { get; set; }
         [ValidateNever]
