@@ -1,4 +1,4 @@
-﻿@model E_Study.Models.Course
+﻿@model E_Study.ViewModels.CourseDetailsVM
 
 @{
     ViewData["Title"] = "Details";
@@ -22,15 +22,9 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.YouTubeUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.YouTubeUrl)
-        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Materials" asp-route-id="@Model?.Id">Take the course</a> |
     <a asp-action="Index">Back to List</a>
 </div>

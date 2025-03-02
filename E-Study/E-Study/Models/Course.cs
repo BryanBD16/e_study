@@ -16,9 +16,8 @@ namespace E_Study.Models
         [StringLength(500, ErrorMessage = "The description cannot be longer than 500 caracters")]
         public string Description { get; set; }
 
-        [Required]
-        [Url(ErrorMessage = "Please enter a valid URL.")]
-        public string YouTubeUrl { get; set; }
+        [Required(ErrorMessage = "The youtubeId is required")]
+        public string YouTubeId { get; set; }
 
         [ValidateNever]
         public ICollection<Question> Questions { get; set; }

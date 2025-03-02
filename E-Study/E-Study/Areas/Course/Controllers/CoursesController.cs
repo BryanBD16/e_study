@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using E_Study.Data;
 using E_Study.Models;
+using E_Study.ViewModels;
 
 namespace E_Study.Areas.Course.Controllers
 {
@@ -23,10 +24,11 @@ namespace E_Study.Areas.Course.Controllers
         // GET: Course/Courses
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Courses.ToListAsync());
+            return View((await _context.Courses.ToListAsync()).Select(c => new CourseDisplayVM(c)));
         }
 
         // GET: Course/Courses/Details/5
+        // Display the name and description of the course. It is from this page that we access the course material.
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -41,7 +43,26 @@ namespace E_Study.Areas.Course.Controllers
                 return NotFound();
             }
 
-            return View(course);
+            return View(new CourseDetailsVM(course));
+        }
+
+        // GET: Course/Courses/Details/5
+        // Display the material of the course like youtube video. It is from this page that we access the course quiz(list of questions).
+        public async Task<IActionResult> Materials(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var course = await _context.Courses
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            return View(new CourseMaterialsVM(course));
         }
 
         // GET: Course/Courses/Create
@@ -55,7 +76,7 @@ namespace E_Study.Areas.Course.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,YouTubeUrl")] Models.Course course)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,YouTubeId")] Models.Course course)
         {
             if (ModelState.IsValid)
             {
