@@ -16,6 +16,13 @@ namespace E_Study
 
             var app = builder.Build();
 
+            // Apply migrations and seed the database if needed
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<E_StudyDbContext>();
+                DbInitializer.Initialize(dbContext); // Call the initializer
+            }
+
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
