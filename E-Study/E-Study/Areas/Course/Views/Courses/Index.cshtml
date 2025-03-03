@@ -5,11 +5,9 @@
 }
 
 <h1>Index</h1>
+<br />
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table-gray">
     <thead>
         <tr>
             <th>
@@ -20,12 +18,12 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+            <tr onclick ="window.location='@Url.Action("Details", new { id = item.Id })'" style="cursor: pointer;">
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+
             </td>
         </tr>
 }

@@ -5,12 +5,16 @@
 }
 
 <h1>@Model.Title</h1>
+<br />
 
-<iframe width="560" height="315"
+<iframe width="840" height="472"
         src="https://www.youtube.com/embed/@Model.YouTubeId"
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen>
 </iframe>
 
-<a asp-controller="Questions" asp-action="Evaluation" asp-route-CourseId="@Model.Id">Go to the Evaluation</a>
+<br />
+<br />
+<a class="btn btn-grey" asp-action="Details" asp-route-id="@Model?.Id">Back to details</a>
+<a class="btn btn-green" asp-controller="Questions" asp-action="Evaluation" asp-route-CourseId="@Model?.Id">Start Evaluation</a>

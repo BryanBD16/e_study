@@ -1,22 +1,207 @@
+/* ==========================
+   Global Styles
+   ========================== */
 html {
-  font-size: 14px;
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: white;
+    color: #333;
+}
+
+/* ==========================
+   Colors
+   ========================== */
+:root {
+    --primary-green: #2c7c31; /* Study green */
+    --secondary-grey: #666666; /* Neutral grey */
+    --white: #ffffff;
+}
+
+/* ==========================
+   Navbar Styles
+   ========================== */
+.navbar {
+    background-color: var(--primary-green) !important;
+}
+
+    .navbar .navbar-brand,
+    .navbar .nav-link {
+        color: var(--white) !important;
+    }
+
+        .navbar .nav-link:hover {
+            color: #cce7cc !important; /* Lighter green on hover */
+        }
+
+.navbar-toggler {
+    border-color: var(--white);
+}
+
+.navbar-toggler-icon {
+    filter: invert(1); /* Make the icon white */
+}
+
+/* ==========================
+   Layout Fix for Sticky Footer
+   ========================== */
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1; /* Pushes the footer to the bottom */
+}
+
+.footer {
+    background-color: var(--secondary-grey);
+    color: var(--white);
+    padding: 15px 0;
+    text-align: center;
+    position: relative;
+    width: 100%;
+}
+
+/* ==========================
+   Typography
+   ========================== */
+h1 {
+    color: var(--primary-green);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    color: var(--secondary-grey);
+}
+
+.p-white {
+    color: var(--white);
+}
+
+.p-grey {
+    color: var(--secondary-grey);
+}
+
+.p-green {
+    color: var(--primary-green);
+}
+
+/* ==========================
+   Buttons
+   ========================== */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+}
+
+/* Green Button */
+.btn-green {
+    background-color: var(--primary-green);
+    color: var(--white);
+}
+
+    .btn-green:hover {
+        background-color: #246628;
+    }
+
+/* Grey Button */
+.btn-grey {
+    background-color: var(--secondary-grey);
+    color: var(--white);
+}
+
+    .btn-grey:hover {
+        background-color: #4d4d4d;
+    }
+
+/* White Button */
+.btn-white {
+    background-color: var(--white);
+    color: var(--primary-green);
+    border: 2px solid var(--primary-green);
+}
+
+    .btn-white:hover {
+        background-color: var(--primary-green);
+        color: var(--white);
+    }
+
+/* ==========================
+   Focus Effects
+   ========================== */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--primary-green);
+}
+/* ==========================
+   Table Styles
+   ========================== */
+.table-gray {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--secondary-grey); /* Grey background */
+    color: var(--white); /* White text */
+    border: none; /* Remove vertical borders */
+}
+
+    .table-gray th,
+    .table-gray td {
+        padding: 12px;
+        text-align: left; /* Default alignment for text */
+    }
+
+    .table-gray th {
+        background-color: #555; /* Darker gray for headers */
+        font-weight: bold;
+        border-bottom: 1px solid #4d4d4d; /* Keep bottom border for headers */
+    }
+
+        /* Align text to the right for the last column */
+        .table-gray td:last-child,
+        .table-gray th:last-child {
+            text-align: right;
+        }
+
+    /* Alternating row color */
+    .table-gray tbody tr:nth-child(even) {
+        background-color: #777;
+    }
+
+    /* Lighter gray on hover */
+    .table-gray tbody tr:hover {
+        background-color: #888;
+    }
+
+/* ==========================
+   Grey Box
+   ========================== */
+.grey-box {
+    background-color: #666; /* Grey background */
+    padding: 15px; /* Padding inside the box */
+    color: var(--white); /* White text */
 }
