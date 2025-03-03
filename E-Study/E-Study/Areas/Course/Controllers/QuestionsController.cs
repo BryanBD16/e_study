@@ -39,13 +39,28 @@ namespace E_Study.Areas.Course.Controllers
                 }
                 _context.CourseResults.Add(result);
                 _context.SaveChanges();
-                return RedirectToAction("Result", result.Id);
+                return RedirectToAction("Result", new { resultId = result.Id });
             }
 
             List<EvaluationQuestionVM> questions = _context.Questions
                 .Where(q => q.CourseId == model.CourseId)
                 .Select(q => new EvaluationQuestionVM(q)).ToList();
             return View(new EvaluationVM(questions, model.CourseId));
+        }
+
+        public ActionResult Result(int resultId)
+        {
+
+
+            return View(new ResultVM(_context.CourseResults
+                .Where(cr => cr.Id == resultId)
+                .Include(cr => cr.Answers)
+                    .ThenInclude(a => a.Question)
+                        .ThenInclude(q => q.AnswerOptions)
+                .Include(cr => cr.Course)
+                    .ThenInclude(c => c.Questions)
+                .FirstOrDefault()));
+
         }
 
         // GET: QuestionsController/Details/5
