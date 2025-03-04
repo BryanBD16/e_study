@@ -1,22 +1,34 @@
 ﻿@model EvaluationVM
 
+<h1>Evaluation</h1>
+<br />
+
 <form asp-action="Evaluation" asp-controller="Questions" method="post">
     <input type="hidden" asp-for="CourseId" />
 
     @for (int i = 0; i < Model.Questions.Count; i++)
     {
-        <div>
-            <p>@Model.Questions[i].Text</p>
-            <input type="hidden" name="Answers[@i].QuestionId" value="@Model.Questions[i].Id" />
+        <div class="grey-box">
+            <h4>@Model.Questions[i].Text</h4>
+            <br />
+            <input type="hidden" asp-for="Answers[i].QuestionId" />
+
             @foreach (var option in Model.Questions[i].AnswerOptions)
             {
                 <label>
-                    <input type="radio" name="Answers[@i].SelectedAnswerId" value="@option.Id" />
+                    <input type="radio" asp-for="Answers[i].SelectedAnswerId" value="@option.Id" />
                     @option.Text
                 </label>
+                <br />
             }
+
+            <span asp-validation-for="Answers[i].SelectedAnswerId" class="text-danger"></span>
         </div>
     }
-
-    <button type="submit">Soumettre</button>
+    <br />
+    <button class="btn-green" type="submit">Soumettre</button>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

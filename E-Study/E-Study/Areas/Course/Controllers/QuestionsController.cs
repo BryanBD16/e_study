@@ -23,29 +23,27 @@ namespace E_Study.Areas.Course.Controllers
             return View(new EvaluationVM(questions, CourseId));
         }
         [HttpPost]
-        public ActionResult Evaluation(EvaluationResponseVM model)
+        public ActionResult Evaluation(EvaluationVM model)
         {
-            if (ModelState.IsValid)
+            if (model.Answers.Any(a => a.SelectedAnswerId == 0))
             {
-                CourseResult result = new CourseResult();
-                result.CourseId = model.CourseId;
-                foreach (var response in model.Answers)
-                {
-                    result.Answers.Add(new Answer
-                    {
-                        QuestionId = response.QuestionId,
-                        SelectedAnswerId = response.SelectedAnswerId
-                    });
-                }
-                _context.CourseResults.Add(result);
-                _context.SaveChanges();
-                return RedirectToAction("Result", new { resultId = result.Id });
+                return View(model);
             }
 
-            List<EvaluationQuestionVM> questions = _context.Questions
-                .Where(q => q.CourseId == model.CourseId)
-                .Select(q => new EvaluationQuestionVM(q)).ToList();
-            return View(new EvaluationVM(questions, model.CourseId));
+            var result = new CourseResult
+            {
+                CourseId = model.CourseId,
+                Answers = model.Answers.Select(a => new Answer
+                {
+                    QuestionId = a.QuestionId,
+                    SelectedAnswerId = a.SelectedAnswerId
+                }).ToList()
+            };
+
+            _context.CourseResults.Add(result);
+            _context.SaveChanges();
+
+            return RedirectToAction("Result", new { resultId = result.Id });
         }
 
         public ActionResult Result(int resultId)
