@@ -1,6 +1,7 @@
 ﻿@model ResultVM;
-
-<h1>Your result on the @Model.ResultTime.Date</h1>
+@using System.Globalization
+<h1>Your result on @Model.ResultTime.ToString("dddd dd MMMM yyyy", CultureInfo.GetCultureInfo("en-US"))</h1>
+<br />
 <h2>@Model.GoodAnswer / @Model.QuestionCount</h2>
-
-<a asp-controller="Courses" asp-action="Index">Back to the courses list</a>
+<br />
+<a class="btn btn-grey" asp-controller="Courses" asp-action="Index">Back to the courses list</a>
